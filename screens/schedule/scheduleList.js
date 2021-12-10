@@ -65,7 +65,7 @@ export default function ScheduleList({ navigation }) {
         <TouchableOpacity onPress={() => setIsModalOpen(true)}>
           <View style={styles.modalToggle}>
             <MaterialIcons name="add" size={24} />
-            <Text>Dodaj wykład</Text>
+            <Text>DODAH CHUJA</Text>
           </View>
         </TouchableOpacity>
 
@@ -126,7 +126,8 @@ const styles = StyleSheet.create({
     borderColor: "#dcdcdc",
     borderRadius: 10,
     padding: 10,
-    alignSelf: "center",
+    alignSelf: "flex-start",
+    backgroundColor: "red"
   },
   modalClose: { marginTop: 20, marginBottom: 0 },
   modalContent: { flex: 1, padding: 15 },
