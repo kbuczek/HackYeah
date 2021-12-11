@@ -2,12 +2,13 @@ import React from "react";
 import { Button, StyleSheet, View, Text, Image } from "react-native";
 import { globalStyles } from "../styles/global";
 
-/*var mysql = require("mysql");
+/*const mysql = require("mysql");
 
-var con = mysql.createConnection({
+const db = mysql.createConnection({
   host: "http://149.156.115.209/phpmyadmin",
   user: "s299918",
   password: "szott-ludwikowskirobert",
+  database: "s299918"
 });
 
 con.connect(function (err) {
