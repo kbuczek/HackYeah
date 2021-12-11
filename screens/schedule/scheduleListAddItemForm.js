@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Button,
@@ -11,12 +11,14 @@ import { globalStyles } from "../../styles/global";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { Picker } from "@react-native-picker/picker";
-// import CustomButton from "../shared/customButton";
+import CustomButton from "../../shared/customButton";
+// import DatePicker from "react-native-date-picker";
 
 const scheduleSchema = yup.object({
-  title: yup.string().required().max(40),
+  activity: yup.string().required().max(40),
   category: yup.string().required().max(40),
-  day: yup.string().required().max(40),
+  length: yup.string().required().max(40),
+  date: yup.string().required().max(10),
   startingHour: yup
     .number()
     .required()
@@ -37,35 +39,31 @@ const scheduleSchema = yup.object({
         return val >= 0 && val <= 59;
       }
     ),
-  endingHour: yup
-    .number()
-    .required()
-    .test(
-      "is-num-0-24",
-      "Godzina musi mieścić się w przedziale od 0 do 24",
-      (val) => {
-        return val >= 0 && val <= 24;
-      }
-    ),
-  endingMinute: yup
-    .number()
-    .required()
-    .test(
-      "is-num-0-59",
-      "Minuty muszą mieścić się w przedziale od 0 do 59",
-      (val) => {
-        return val >= 0 && val <= 59;
-      }
-    ),
   notes: yup.string().max(200),
 });
 
-export default function ScheduleListAddItemForm({ addScheduleListItem }) {
+export default function ScheduleListAddItemForm({ setIsModalOpen }) {
   const options = ["Job & self improvement", "Workout"];
+  const optionsLength = ["15", "30", "45", "60", "90", "120"];
+
+  const addScheduleListItem = (item) => {
+    console.log("ADD");
+    console.log(item);
+    setIsModalOpen(false);
+  };
+
   return (
     <View style={globalStyles.container}>
       <Formik
-        initialValues={{ title: "", person: "", notes: "" }}
+        initialValues={{
+          activity: "",
+          category: "Job & self improvement",
+          length: "15",
+          date: "",
+          startingHour: "",
+          startingMinute: "",
+          notes: "",
+        }}
         validationSchema={scheduleSchema}
         onSubmit={(values, actions) => {
           actions.resetForm();
@@ -77,13 +75,13 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
             <Text>Activity Name</Text>
             <TextInput
               style={globalStyles.input}
-              // placeholder="Activity name"
-              onChangeText={props.handleChange("title")}
-              value={props.values.title}
-              onBlur={props.handleBlur("title")}
+              placeholder="ex. Work on my mobile game"
+              onChangeText={props.handleChange("activity")}
+              value={props.values.activity}
+              onBlur={props.handleBlur("activity")}
             />
             <Text style={globalStyles.errorText}>
-              {props.touched.title && props.errors.title}
+              {props.touched.activity && props.errors.activity}
             </Text>
 
             <Text>Category</Text>
@@ -109,34 +107,47 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
               </Picker>
             </View>
 
-            <TextInput
-              style={globalStyles.input}
-              placeholder="Osoba prowadząca"
-              onChangeText={props.handleChange("person")}
-              value={props.values.person}
-              onBlur={props.handleBlur("person")}
-            />
-            <Text style={globalStyles.errorText}>
-              {props.touched.person && props.errors.person}
-            </Text>
+            <Text>Length in minutes</Text>
+            <View
+              style={{
+                borderColor: "lightgray",
+                borderRadius: 3,
+                borderWidth: 1,
+                marginBottom: 20,
+              }}
+            >
+              <Picker
+                style={{ height: 50, width: 360 }}
+                mode="dropdown"
+                prompt={"Select language"}
+                itemStyle={{ backgroundColor: "gray" }}
+                selectedValue={props.values.length}
+                onValueChange={props.handleChange("length")}
+              >
+                {optionsLength.map((item, id) => {
+                  return <Picker.Item label={item} value={item} key={id} />;
+                })}
+              </Picker>
+            </View>
 
-            <Text>Dzień wykładu:</Text>
+            <Text>Date</Text>
             <TextInput
               style={globalStyles.input}
-              placeholder="Wybierz dzień wykładu"
-              onChangeText={props.handleChange("day")}
-              value={props.values.day}
-              onBlur={props.handleBlur("day")}
+              placeholder="DD-MM-YYYY"
+              onChangeText={props.handleChange("date")}
+              value={props.values.date}
+              onBlur={props.handleBlur("date")}
+              keyboardType="numeric"
             />
             <Text style={globalStyles.errorText}>
               {props.touched.day && props.errors.day}
             </Text>
 
-            <Text>Godzina rozpoczęcia:</Text>
+            <Text>Starting Hour</Text>
             <View style={{ flexDirection: "row" }}>
               <TextInput
                 style={globalStyles.inputSmall}
-                placeholder="Godziny"
+                placeholder="Hour"
                 onChangeText={props.handleChange("startingHour")}
                 value={props.values.startingHour}
                 onBlur={props.handleBlur("startingHour")}
@@ -150,7 +161,7 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
 
               <TextInput
                 style={globalStyles.inputSmall}
-                placeholder="Minuty"
+                placeholder="Minute"
                 onChangeText={props.handleChange("startingMinute")}
                 value={props.values.startingMinute}
                 onBlur={props.handleBlur("startingMinute")}
@@ -161,40 +172,12 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
               </Text>
             </View>
 
-            <Text style={{ marginTop: 10 }}>Godzina zakończenia:</Text>
-            <View style={{ flexDirection: "row", marginBottom: 35 }}>
-              <TextInput
-                style={globalStyles.inputSmall}
-                placeholder="Godziny"
-                onChangeText={props.handleChange("endingHour")}
-                value={props.values.endingHour}
-                onBlur={props.handleBlur("endingHour")}
-                keyboardType="numeric"
-              />
-              <Text style={globalStyles.errorText}>
-                {props.touched.endingHour && props.errors.endingHour}
-              </Text>
-
-              <Text style={styles.doubleDot}>:</Text>
-
-              <TextInput
-                style={globalStyles.inputSmall}
-                placeholder="Minuty"
-                onChangeText={props.handleChange("endingMinute")}
-                value={props.values.endingMinute}
-                onBlur={props.handleBlur("endingMinute")}
-                keyboardType="numeric"
-              />
-              <Text style={globalStyles.errorText}>
-                {props.touched.endingMinute && props.errors.endingMinute}
-              </Text>
-            </View>
-
+            <Text>Notes</Text>
             <TextInput
               multiline
               minHeight={60}
               style={globalStyles.input}
-              placeholder="Your notes"
+              placeholder="add some additional info here :)"
               onChangeText={props.handleChange("notes")}
               value={props.values.notes}
               onBlur={props.handleBlur("notes")}
@@ -203,8 +186,7 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
               {props.touched.notes && props.errors.notes}
             </Text>
 
-            <Button title="Dodaj" color="green" onPress={props.handleSubmit} />
-            {/* <CustomButton text="Submit" onPress={props.handleSubmit} /> */}
+            <CustomButton text="Submit" onPress={props.handleSubmit} />
           </View>
         )}
       </Formik>

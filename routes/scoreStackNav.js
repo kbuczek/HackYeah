@@ -1,12 +1,12 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import About from "../screens/about";
+import Score from "../screens/score";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 
-export default aboutStackNav = ({ navigation }) => {
+export default scoreStackNav = ({ navigation }) => {
   const openDrawer = () => {
     navigation.openDrawer();
   };
@@ -25,10 +25,10 @@ export default aboutStackNav = ({ navigation }) => {
       }}
     >
       <Stack.Screen
-        name="About"
-        component={About}
+        name="High score table"
+        component={Score}
         options={{
-          title: "About",
+          title: "High score table",
           headerLeft: () => (
             <MaterialIcons
               name="menu"

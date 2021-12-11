@@ -19,13 +19,15 @@ import ScheduleListAddItemForm from "./scheduleListAddItemForm";
 import { globalStyles } from "../../styles/global";
 import Data from "../../data/scheduleData";
 import * as Progress from "react-native-progress";
+import ScheduleListUserLogin from "./scheduleListUserLogin";
 
 export default function ScheduleList({ navigation }) {
   const [scheduleData, setScheduleData] = useState(Data);
+  const [isModalLoginOpen, setIsModalLoginOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [health, setHealth] = useState(50);
   const [strength, setStrength] = useState(50);
-  const [dayStreak, setDayStreak] = useState(0);
+  const [userScore, setUserScore] = useState(0);
 
   const pressHandlerDeleteItem = (key) => {
     setScheduleData((previousScheduleData) => {
@@ -43,6 +45,11 @@ export default function ScheduleList({ navigation }) {
     setIsModalOpen(false);
   };
 
+  const handleUserLogin = (item) => {
+    console.log(item);
+    setIsModalLoginOpen(false);
+  };
+
   const chooseDogImage = () => {
     if (health < 45) {
       return <Image source={require("../../assets/saddog.gif")} />;
@@ -58,19 +65,36 @@ export default function ScheduleList({ navigation }) {
       {/* <ScrollView> */}
       <View style={globalStyles.container}>
         {/* Modal */}
+
+        <Modal visible={isModalLoginOpen} animationType="slide">
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.modalContent}>
+              {/* <MaterialIcons
+                name="close"
+                size={24}
+                style={{ ...styles.modalToggle, ...styles.modalClose }}
+                onPress={() => setIsModalLoginOpen(false)}
+              /> */}
+              <ScrollView>
+                <ScheduleListUserLogin
+                  setIsModalLoginOpen={setIsModalLoginOpen}
+                />
+              </ScrollView>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+
         <Modal visible={isModalOpen} animationType="slide">
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
               <MaterialIcons
                 name="close"
-                size={50}
+                size={24}
                 style={{ ...styles.modalToggle, ...styles.modalClose }}
                 onPress={() => setIsModalOpen(false)}
               />
               <ScrollView>
-                <ScheduleListAddItemForm
-                  addScheduleListItem={addScheduleListItem}
-                />
+                <ScheduleListAddItemForm setIsModalOpen={setIsModalOpen} />
               </ScrollView>
             </View>
           </TouchableWithoutFeedback>
@@ -80,11 +104,11 @@ export default function ScheduleList({ navigation }) {
           <TouchableOpacity onPress={() => setIsModalOpen(true)}>
             <View style={styles.modalToggle}>
               <MaterialIcons name="add" size={24} />
-              <Text>Add</Text>
+              {/* <Text>Add</Text> */}
             </View>
           </TouchableOpacity>
 
-          <Text style={styles.dayStreak}>Day streak {dayStreak}</Text>
+          <Text style={styles.dayStreak}>Your score {userScore}</Text>
           <View></View>
         </View>
 
@@ -132,18 +156,6 @@ export default function ScheduleList({ navigation }) {
                 />
               )}
             />
-            {/* {scheduleData.map((item) => {
-                return (
-                  <View key={item.key}>
-                    <ScheduleListItem
-                      item={item}
-                      pressHandler={() =>
-                        navigation.navigate("ListItemDetails", item)
-                      }
-                    />
-                  </View>
-                );
-              })} */}
           </View>
         </View>
       </View>
@@ -173,7 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     alignSelf: "flex-start",
-    backgroundColor: "red",
+    // backgroundColor: "red",
   },
   modalClose: { marginTop: 20, marginBottom: 0 },
   modalContent: { flex: 1, padding: 15 },

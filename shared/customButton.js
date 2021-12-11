@@ -7,7 +7,7 @@ export default function CustomButton({ text, onPress }) {
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
         <Text style={styles.buttonText}>{text}</Text>
-        <MaterialIcons name="delete" size={18} color="#333" />
+        {/* <MaterialIcons name="delete" size={18} color="#333" /> */}
       </View>
     </TouchableOpacity>
   );

@@ -11,7 +11,8 @@ export default function ScheduleListItem({ item, pressHandler }) {
           {item.endingMinute}
         </Text>
         <Text style={styles.itemText}>{item.title}</Text>
-        {/* <MaterialIcons name="delete" size={18} color="#333" /> */}
+        <MaterialIcons name="delete" size={18} color="#333" />
+        <MaterialIcons name="delete" size={18} color="#333" />
       </View>
     </TouchableOpacity>
   );
