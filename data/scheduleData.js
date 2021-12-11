@@ -2,7 +2,7 @@ export default Data = [
   {
     key: "1",
     title: "Go to GYM",
-    person: "prof. Michał Karnowski",
+    person: "Michał Karnowski",
     day: "10-11-2021",
     startingHour: 10,
     startingMinute: 15,

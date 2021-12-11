@@ -18,10 +18,13 @@ import ScheduleListItem from "./scheduleListItem";
 import ScheduleListAddItemForm from "./scheduleListAddItemForm";
 import { globalStyles } from "../../styles/global";
 import Data from "../../data/scheduleData";
+import * as Progress from "react-native-progress";
 
 export default function ScheduleList({ navigation }) {
   const [scheduleData, setScheduleData] = useState(Data);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [health, setHealth] = useState(50);
+  const [strength, setStrength] = useState(50);
 
   const pressHandlerDeleteItem = (key) => {
     setScheduleData((previousScheduleData) => {
@@ -37,6 +40,16 @@ export default function ScheduleList({ navigation }) {
       return [item, ...prevScheduleData];
     });
     setIsModalOpen(false);
+  };
+
+  const chooseDogImage = () => {
+    if (health < 45) {
+      return <Image source={require("../../assets/saddog.gif")} />;
+    } else if (health > 85) {
+      return <Image source={require("../../assets/hearteyesdog.gif")} />;
+    } else {
+      return <Image source={require("../../assets/smiledog.gif")} />;
+    }
   };
 
   return (
@@ -69,12 +82,34 @@ export default function ScheduleList({ navigation }) {
           </View>
         </TouchableOpacity>
 
-        <View style={styles.animal}>
-          <Image source={require("../../assets/dog.gif")} />
+        <View style={styles.animal}>{chooseDogImage()}</View>
+
+        <View style={styles.bar}>
+          <View style={styles.barText}>
+            <Text>Health {health}</Text>
+          </View>
+          <Progress.Bar
+            progress={health / 100}
+            height={15}
+            width={200}
+            color="rgba(222, 144, 130, 1)"
+          />
+        </View>
+
+        <View style={styles.bar}>
+          <View style={styles.barText}>
+            <Text>Strength {strength}</Text>
+          </View>
+          <Progress.Bar
+            progress={strength / 100}
+            height={15}
+            width={200}
+            color="rgba(62, 255, 80, 1)"
+          />
         </View>
 
         <View style={styles.content}>
-          <Text>Your today's plan:</Text>
+          <Text style={styles.todayPlan}>Your today's plan:</Text>
           <View style={styles.list}>
             <FlatList
               data={scheduleData}
@@ -143,5 +178,22 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
     marginBottom: 0,
     maxHeight: 200,
+  },
+
+  bar: {
+    flex: 1,
+    flexDirection: "column",
+    alignSelf: "center",
+    maxHeight: 45,
+  },
+  barText: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    maxHeight: 18,
+    marginBottom: 3,
+  },
+  todayPlan: {
+    fontSize: 25,
   },
 });
