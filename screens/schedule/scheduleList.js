@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Touchable,
+  Image,
   Modal,
   TouchableOpacity,
   ScrollView,
@@ -23,7 +24,6 @@ export default function ScheduleList({ navigation }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const pressHandlerDeleteItem = (key) => {
-    console.log("DELETE");
     setScheduleData((previousScheduleData) => {
       return previousScheduleData.filter(
         (scheduleData) => scheduleData.key != key
@@ -49,7 +49,7 @@ export default function ScheduleList({ navigation }) {
             <View style={styles.modalContent}>
               <MaterialIcons
                 name="close"
-                size={24}
+                size={50}
                 style={{ ...styles.modalToggle, ...styles.modalClose }}
                 onPress={() => setIsModalOpen(false)}
               />
@@ -68,6 +68,10 @@ export default function ScheduleList({ navigation }) {
             <Text>DODAH CHUJA</Text>
           </View>
         </TouchableOpacity>
+
+        <View style={styles.container}>
+          <Image source={require("../../assets/dog.gif")} />
+        </View>
 
         <View style={styles.content}>
           <View style={styles.list}>
@@ -127,7 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     alignSelf: "flex-start",
-    backgroundColor: "red"
+    backgroundColor: "red",
   },
   modalClose: { marginTop: 20, marginBottom: 0 },
   modalContent: { flex: 1, padding: 15 },
