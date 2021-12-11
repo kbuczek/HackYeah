@@ -74,7 +74,7 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
           <View>
             <TextInput
               style={globalStyles.input}
-              placeholder="Tytuł wykładu"
+              placeholder="Activity name"
               onChangeText={props.handleChange("title")}
               value={props.values.title}
               onBlur={props.handleBlur("title")}
@@ -168,7 +168,7 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
               multiline
               minHeight={60}
               style={globalStyles.input}
-              placeholder="Notatki"
+              placeholder="Your notes"
               onChangeText={props.handleChange("notes")}
               value={props.values.notes}
               onBlur={props.handleBlur("notes")}

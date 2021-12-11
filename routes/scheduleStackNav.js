@@ -28,7 +28,7 @@ export default scheduleStackNav = ({ navigation }) => {
         name="Schedule"
         component={ScheduleList}
         options={{
-          title: "Harmonogram Konferencji",
+          title: "MotivateME",
           headerLeft: () => (
             <MaterialIcons
               name="menu"

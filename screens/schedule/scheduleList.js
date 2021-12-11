@@ -65,15 +65,16 @@ export default function ScheduleList({ navigation }) {
         <TouchableOpacity onPress={() => setIsModalOpen(true)}>
           <View style={styles.modalToggle}>
             <MaterialIcons name="add" size={24} />
-            <Text>DODAH CHUJA</Text>
+            <Text>Add</Text>
           </View>
         </TouchableOpacity>
 
-        <View style={styles.container}>
+        <View style={styles.animal}>
           <Image source={require("../../assets/dog.gif")} />
         </View>
 
         <View style={styles.content}>
+          <Text>Your today's plan:</Text>
           <View style={styles.list}>
             <FlatList
               data={scheduleData}
@@ -135,4 +136,12 @@ const styles = StyleSheet.create({
   },
   modalClose: { marginTop: 20, marginBottom: 0 },
   modalContent: { flex: 1, padding: 15 },
+  animal: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    paddingBottom: 0,
+    marginBottom: 0,
+    maxHeight: 200,
+  },
 });
