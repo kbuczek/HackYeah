@@ -10,11 +10,12 @@ import {
 import { globalStyles } from "../../styles/global";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { Picker } from "@react-native-picker/picker";
 // import CustomButton from "../shared/customButton";
 
 const scheduleSchema = yup.object({
   title: yup.string().required().max(40),
-  person: yup.string().required().max(40),
+  category: yup.string().required().max(40),
   day: yup.string().required().max(40),
   startingHour: yup
     .number()
@@ -60,8 +61,9 @@ const scheduleSchema = yup.object({
 });
 
 export default function ScheduleListAddItemForm({ addScheduleListItem }) {
+  const options = ["Job & self improvement", "Workout"];
   return (
-    <View style={globalStyles.cointainer}>
+    <View style={globalStyles.container}>
       <Formik
         initialValues={{ title: "", person: "", notes: "" }}
         validationSchema={scheduleSchema}
@@ -72,9 +74,10 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
       >
         {(props) => (
           <View>
+            <Text>Activity Name</Text>
             <TextInput
               style={globalStyles.input}
-              placeholder="Activity name"
+              // placeholder="Activity name"
               onChangeText={props.handleChange("title")}
               value={props.values.title}
               onBlur={props.handleBlur("title")}
@@ -82,6 +85,29 @@ export default function ScheduleListAddItemForm({ addScheduleListItem }) {
             <Text style={globalStyles.errorText}>
               {props.touched.title && props.errors.title}
             </Text>
+
+            <Text>Category</Text>
+            <View
+              style={{
+                borderColor: "lightgray",
+                borderRadius: 3,
+                borderWidth: 1,
+                marginBottom: 20,
+              }}
+            >
+              <Picker
+                style={{ height: 50, width: 360 }}
+                mode="dropdown"
+                prompt={"Select language"}
+                itemStyle={{ backgroundColor: "gray" }}
+                selectedValue={props.values.category}
+                onValueChange={props.handleChange("category")}
+              >
+                {options.map((item, id) => {
+                  return <Picker.Item label={item} value={item} key={id} />;
+                })}
+              </Picker>
+            </View>
 
             <TextInput
               style={globalStyles.input}

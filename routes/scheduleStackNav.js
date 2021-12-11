@@ -46,7 +46,7 @@ export default scheduleStackNav = ({ navigation }) => {
         name="ListItemDetails"
         component={ListItemDetails}
         options={{
-          title: "Szczegóły wykładu",
+          title: "Activity Details",
           headerStyle: {
             backgroundColor: "#41C05A",
           },

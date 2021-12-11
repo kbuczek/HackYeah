@@ -25,6 +25,7 @@ export default function ScheduleList({ navigation }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [health, setHealth] = useState(50);
   const [strength, setStrength] = useState(50);
+  const [dayStreak, setDayStreak] = useState(0);
 
   const pressHandlerDeleteItem = (key) => {
     setScheduleData((previousScheduleData) => {
@@ -75,12 +76,17 @@ export default function ScheduleList({ navigation }) {
           </TouchableWithoutFeedback>
         </Modal>
 
-        <TouchableOpacity onPress={() => setIsModalOpen(true)}>
-          <View style={styles.modalToggle}>
-            <MaterialIcons name="add" size={24} />
-            <Text>Add</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.topOfPage}>
+          <TouchableOpacity onPress={() => setIsModalOpen(true)}>
+            <View style={styles.modalToggle}>
+              <MaterialIcons name="add" size={24} />
+              <Text>Add</Text>
+            </View>
+          </TouchableOpacity>
+
+          <Text style={styles.dayStreak}>Day streak {dayStreak}</Text>
+          <View></View>
+        </View>
 
         <View style={styles.animal}>{chooseDogImage()}</View>
 
@@ -171,6 +177,15 @@ const styles = StyleSheet.create({
   },
   modalClose: { marginTop: 20, marginBottom: 0 },
   modalContent: { flex: 1, padding: 15 },
+  topOfPage: {
+    flex: 1,
+    flexDirection: "row",
+    // justifyContent: "center",
+    // alignItems: "center",
+    justifyContent: "space-between",
+    maxHeight: 30,
+  },
+  dayStreak: {},
   animal: {
     flex: 1,
     flexDirection: "row",

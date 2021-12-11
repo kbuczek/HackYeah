@@ -8,6 +8,6 @@ export default Data = [
     startingMinute: 15,
     endingHour: 11,
     endingMinute: 0,
-    notes: "Pomóc w obsłudze projektora przed wykładem",
+    notes: "Do 50 push ups",
   },
 ];
