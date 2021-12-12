@@ -25,6 +25,7 @@ import Url from "../../shared/Api/urls";
 
 export default function ScheduleList({ navigation }) {
   const [scheduleData, setScheduleData] = useState();
+  const [addData, setAddData] = useState(true);
   // const [isModalLoginOpen, setIsModalLoginOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
@@ -60,7 +61,7 @@ export default function ScheduleList({ navigation }) {
         setScheduleData(response);
       }
     );
-  }, [globalUserIdContext.array]);
+  }, [globalUserIdContext.array, addData]);
 
   const pressHandlerDeleteItem = (task_id, done) => {
     setScheduleData([]);
@@ -114,6 +115,7 @@ export default function ScheduleList({ navigation }) {
               />
               <ScrollView>
                 <ScheduleListAddItemForm
+                  setAddData={setAddData}
                   setIsModalOpen={setIsModalOpen}
                   userId={userId}
                 />

@@ -45,7 +45,11 @@ const scheduleSchema = yup.object({
   notes: yup.string().max(200),
 });
 
-export default function ScheduleListAddItemForm({ setIsModalOpen, userId }) {
+export default function ScheduleListAddItemForm({
+  setIsModalOpen,
+  setAddData,
+  userId,
+}) {
   const options = ["Job & self improvement", "Workout"];
   const optionsLength = ["15", "30", "45", "60", "90", "120"];
   const globalUserIdContext = useContext(AppContext);
@@ -57,6 +61,9 @@ export default function ScheduleListAddItemForm({ setIsModalOpen, userId }) {
     const data = { user_id: globalUserIdContext.array, ...item };
     console.log(data);
     FetchWithData(Url.addTask, "POST", data);
+    setAddData((prev) => {
+      !prev;
+    });
     setIsModalOpen(false);
   };
 
