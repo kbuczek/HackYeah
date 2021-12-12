@@ -20,9 +20,11 @@ import { globalStyles } from "../../styles/global";
 import Data from "../../data/scheduleData";
 import * as Progress from "react-native-progress";
 import AppContext from "../../shared/AppContext";
+import FetchNoData from "../../shared/Api/fetchNoData";
+import Url from "../../shared/Api/urls";
 
 export default function ScheduleList({ navigation }) {
-  const [scheduleData, setScheduleData] = useState(Data);
+  const [scheduleData, setScheduleData] = useState();
   // const [isModalLoginOpen, setIsModalLoginOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
@@ -36,22 +38,36 @@ export default function ScheduleList({ navigation }) {
     navigation.navigate("ScheduleListUserLogin");
     console.log("GLOBAL ELITE", globalUserIdContext.array);
     setUserId(globalUserIdContext.array);
+    // setUserId(globalUserIdContext.array);
   }, []);
 
-  const pressHandlerDeleteItem = (key) => {
-    setScheduleData((previousScheduleData) => {
-      return previousScheduleData.filter(
-        (scheduleData) => scheduleData.key != key
+  useEffect(() => {
+    FetchNoData(Url.baseUrl + `/${globalUserIdContext.array}`, "GET").then(
+      (response) => {
+        console.log(response);
+        setScheduleData(response);
+      }
+    );
+  }, [userId]);
+
+  const pressHandlerDeleteItem = (task_id, done) => {
+    setScheduleData([]);
+    FetchNoData(
+      Url.baseUrl +
+        `/${globalUserIdContext.array}` +
+        `/${task_id}` +
+        `/${done}`,
+      "DELETE"
+    ).then((response) => {
+      setHealth(response.health);
+      setStrength(response.strenght);
+      FetchNoData(Url.baseUrl + `/${globalUserIdContext.array}`, "GET").then(
+        (response) => {
+          console.log(response);
+          setScheduleData(response);
+        }
       );
     });
-  };
-
-  const addScheduleListItem = (item) => {
-    item.key = Math.random().toString(); //find better way to generate key
-    setScheduleData((prevScheduleData) => {
-      return [item, ...prevScheduleData];
-    });
-    setIsModalOpen(false);
   };
 
   const handleUserLogin = (item) => {
@@ -137,9 +153,11 @@ export default function ScheduleList({ navigation }) {
             <FlatList
               data={scheduleData}
               // dont have to add keyExtractor if you already have key property
+              // keyExtractor={}
               renderItem={({ item }) => (
                 <ScheduleListItem
                   item={item}
+                  pressHandlerDeleteItem={pressHandlerDeleteItem}
                   pressHandler={() =>
                     navigation.navigate("ListItemDetails", {
                       item,

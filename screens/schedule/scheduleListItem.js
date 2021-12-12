@@ -3,23 +3,27 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 // import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function ScheduleListItem({ item, pressHandler }) {
+export default function ScheduleListItem({
+  item,
+  pressHandlerDeleteItem,
+  pressHandler,
+}) {
   const handleTaskSuccess = () => {
-    console.log(item);
+    pressHandlerDeleteItem(item.task_id, "true");
   };
 
   const handleTaskFailure = () => {
-    console.log(item);
+    pressHandlerDeleteItem(item.task_id, "false");
   };
 
   return (
-    <TouchableOpacity onPress={() => pressHandler(item.key)}>
+    <TouchableOpacity onPress={() => pressHandler(item.task_id)}>
       <View style={styles.item}>
         <View style={{ flexDirection: "row" }}>
           <Text>
             {item.startingHour}:{item.startingMinute}
           </Text>
-          <Text>{item.length} min</Text>
+          <Text> {item.length} min</Text>
           <Text style={styles.itemText}>{item.activity}</Text>
         </View>
         <View style={{ flexDirection: "row" }}>

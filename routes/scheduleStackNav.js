@@ -50,7 +50,7 @@ export default scheduleStackNav = ({ navigation }) => {
         options={{
           title: "Activity Details",
           headerStyle: {
-            backgroundColor: "#41C05A",
+            backgroundColor: "#427ad4",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {

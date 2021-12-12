@@ -3,23 +3,38 @@ import { StyleSheet, View, Text, Button } from "react-native";
 import { globalStyles } from "../../styles/global";
 import Card from "../../shared/card";
 import DeleteButton from "../../shared/deleteButton";
+import CustomButton from "../../shared/customButton";
 
 export default function ListItemDetails({ route, navigation }) {
-  const { key, title, person, day, notes } = route.params.item;
-  const pressHandler = () => {
+  const {
+    task_id,
+    activity,
+    category,
+    date,
+    length,
+    notes,
+    startingHour,
+    startingMinute,
+  } = route.params.item;
+
+  const pressHandlerSuccess = () => {
     navigation.goBack();
-    route.params.pressHandlerDeleteItem(key);
+    route.params.pressHandlerDeleteItem(task_id, "true");
+  };
+  const pressHandlerFailure = () => {
+    navigation.goBack();
+    route.params.pressHandlerDeleteItem(task_id, "false");
   };
 
   return (
     <View style={globalStyles.container}>
       <Card>
-        <Text style={styles.text}>{title}</Text>
-        <Text style={styles.text}>{person}</Text>
+        <Text style={styles.text}>{activity}</Text>
+        <Text style={styles.text}>{category}</Text>
         <Text style={styles.text}>{notes}</Text>
-        {/* <Button title="Usuń wykład" color="red" /> */}
       </Card>
-      <DeleteButton text="usuń wykład" onPress={pressHandler} />
+      <CustomButton text="success" onPress={pressHandlerSuccess} />
+      <DeleteButton text="failure" onPress={pressHandlerFailure} />
     </View>
   );
 }
