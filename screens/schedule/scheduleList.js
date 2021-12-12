@@ -36,19 +36,31 @@ export default function ScheduleList({ navigation }) {
 
   useEffect(() => {
     navigation.navigate("ScheduleListUserLogin");
-    console.log("GLOBAL ELITE", globalUserIdContext.array);
-    setUserId(globalUserIdContext.array);
+    // console.log("GLOBAL ELITE", globalUserIdContext.array);
+    // setUserId(globalUserIdContext.array);
     // setUserId(globalUserIdContext.array);
   }, []);
+
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener("focus", () => {
+  //     console.log("GLOBAL ELITE", globalUserIdContext.array);
+  //     setUserId(globalUserIdContext.array);
+  //     // FetchNoData(Urls.baseUrl).then((response) => setProducts(response));
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
 
   useEffect(() => {
     FetchNoData(Url.baseUrl + `/${globalUserIdContext.array}`, "GET").then(
       (response) => {
+        console.log("XDDDD");
+        console.log(globalUserIdContext.array);
         console.log(response);
         setScheduleData(response);
       }
     );
-  }, [userId]);
+  }, [globalUserIdContext.array]);
 
   const pressHandlerDeleteItem = (task_id, done) => {
     setScheduleData([]);
@@ -61,6 +73,7 @@ export default function ScheduleList({ navigation }) {
     ).then((response) => {
       setHealth(response.health);
       setStrength(response.strenght);
+      setUserScore(response.score);
       FetchNoData(Url.baseUrl + `/${globalUserIdContext.array}`, "GET").then(
         (response) => {
           console.log(response);
