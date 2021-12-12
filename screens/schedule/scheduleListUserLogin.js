@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Button,
@@ -6,6 +6,7 @@ import {
   View,
   Text,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { globalStyles } from "../../styles/global";
 import { Formik } from "formik";
@@ -13,17 +14,28 @@ import * as yup from "yup";
 import CustomButton from "../../shared/customButton";
 import Urls from "../../shared/Api/urls";
 import fetchWithData from "../../shared/Api/fetchWithData";
+import AppContext from "../../shared/AppContext";
 
 const scheduleSchema = yup.object({
   login: yup.string().required().max(40),
   password: yup.string().required().max(40),
 });
 
-export default function ScheduleListUserLogin({ setIsModalLoginOpen }) {
+export default function ScheduleListUserLogin({ navigation }) {
+  const globalUserIdContext = useContext(AppContext);
+  const [message, setMessage] = useState("");
+
   const handleUserLogin = (item) => {
     console.log("LOGIN", item);
-    fetchWithData(Urls.login, "POST", item);
-    // setIsModalLoginOpen(false);
+    fetchWithData(Urls.login, "POST", item).then((response) => {
+      if (response.logged !== "false") {
+        // console.log(response.logged);
+        globalUserIdContext.changeGlobalUserId(response.logged);
+        navigation.goBack();
+      } else {
+        setMessage("Wrong login or password. Try again.");
+      }
+    });
   };
 
   return (
@@ -61,6 +73,17 @@ export default function ScheduleListUserLogin({ setIsModalLoginOpen }) {
               {props.touched.password && props.errors.password}
             </Text>
 
+            <Text>{message}</Text>
+
+            <TouchableOpacity
+              style={styles.register}
+              onPress={() => {
+                navigation.navigate("ScheduleListUserRegister");
+              }}
+            >
+              <Text>No account? Register</Text>
+            </TouchableOpacity>
+
             <CustomButton text="Submit" onPress={props.handleSubmit} />
           </View>
         )}
@@ -82,5 +105,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
     fontSize: 20,
     paddingTop: 10,
+  },
+  register: {
+    marginBottom: 15,
   },
 });

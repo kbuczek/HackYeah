@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,15 +19,24 @@ import ScheduleListAddItemForm from "./scheduleListAddItemForm";
 import { globalStyles } from "../../styles/global";
 import Data from "../../data/scheduleData";
 import * as Progress from "react-native-progress";
-import ScheduleListUserLogin from "./scheduleListUserLogin";
+import AppContext from "../../shared/AppContext";
 
 export default function ScheduleList({ navigation }) {
   const [scheduleData, setScheduleData] = useState(Data);
-  const [isModalLoginOpen, setIsModalLoginOpen] = useState(true);
+  // const [isModalLoginOpen, setIsModalLoginOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
   const [health, setHealth] = useState(50);
   const [strength, setStrength] = useState(50);
   const [userScore, setUserScore] = useState(0);
+  const [userId, setUserId] = useState(-1);
+  const globalUserIdContext = useContext(AppContext);
+
+  useEffect(() => {
+    navigation.navigate("ScheduleListUserLogin");
+    console.log("GLOBAL ELITE", globalUserIdContext.array);
+    setUserId(globalUserIdContext.array);
+  }, []);
 
   const pressHandlerDeleteItem = (key) => {
     setScheduleData((previousScheduleData) => {
@@ -65,25 +74,6 @@ export default function ScheduleList({ navigation }) {
       {/* <ScrollView> */}
       <View style={globalStyles.container}>
         {/* Modal */}
-
-        <Modal visible={isModalLoginOpen} animationType="slide">
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.modalContent}>
-              {/* <MaterialIcons
-                name="close"
-                size={24}
-                style={{ ...styles.modalToggle, ...styles.modalClose }}
-                onPress={() => setIsModalLoginOpen(false)}
-              /> */}
-              <ScrollView>
-                <ScheduleListUserLogin
-                  setIsModalLoginOpen={setIsModalLoginOpen}
-                />
-              </ScrollView>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-
         <Modal visible={isModalOpen} animationType="slide">
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
@@ -94,7 +84,10 @@ export default function ScheduleList({ navigation }) {
                 onPress={() => setIsModalOpen(false)}
               />
               <ScrollView>
-                <ScheduleListAddItemForm setIsModalOpen={setIsModalOpen} />
+                <ScheduleListAddItemForm
+                  setIsModalOpen={setIsModalOpen}
+                  userId={userId}
+                />
               </ScrollView>
             </View>
           </TouchableWithoutFeedback>
@@ -174,6 +167,10 @@ const styles = StyleSheet.create({
     padding: 0,
     flex: 1,
   },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
   list: {
     flex: 1,
   },
@@ -197,7 +194,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     maxHeight: 30,
   },
-  dayStreak: {},
+  dayStreak: { marginRight: 50 },
   animal: {
     flex: 1,
     flexDirection: "row",

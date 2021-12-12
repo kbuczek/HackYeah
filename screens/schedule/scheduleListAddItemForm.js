@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   Button,
@@ -12,7 +12,10 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Picker } from "@react-native-picker/picker";
 import CustomButton from "../../shared/customButton";
+import FetchWithData from "../../shared/Api/fetchWithData";
+import Url from "../../shared/Api/urls";
 // import DatePicker from "react-native-date-picker";
+import AppContext from "../../shared/AppContext";
 
 const scheduleSchema = yup.object({
   activity: yup.string().required().max(40),
@@ -42,13 +45,18 @@ const scheduleSchema = yup.object({
   notes: yup.string().max(200),
 });
 
-export default function ScheduleListAddItemForm({ setIsModalOpen }) {
+export default function ScheduleListAddItemForm({ setIsModalOpen, userId }) {
   const options = ["Job & self improvement", "Workout"];
   const optionsLength = ["15", "30", "45", "60", "90", "120"];
+  const globalUserIdContext = useContext(AppContext);
 
   const addScheduleListItem = (item) => {
     console.log("ADD");
-    console.log(item);
+    // console.log(item);
+    // console.log(globalUserIdContext.array);
+    const data = { user_id: globalUserIdContext.array, ...item };
+    console.log(data);
+    FetchWithData(Url.addTask, "POST", data);
     setIsModalOpen(false);
   };
 

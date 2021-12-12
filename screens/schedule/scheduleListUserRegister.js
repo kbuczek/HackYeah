@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Button,
@@ -17,19 +17,30 @@ import fetchWithData from "../../shared/Api/fetchWithData";
 const scheduleSchema = yup.object({
   login: yup.string().required().max(40),
   password: yup.string().required().max(40),
+  password2: yup.string().required().max(40),
 });
 
-export default function ScheduleListUserLogin({ setIsModalLoginOpen }) {
+export default function ScheduleListUserRegister({ navigation }) {
+  const [message, setMessage] = useState("");
   const handleUserLogin = (item) => {
-    console.log("LOGIN", item);
-    fetchWithData(Urls.login, "POST", item);
-    // setIsModalLoginOpen(false);
+    console.log("REGISTER", item);
+    if (item.password === item.password2) {
+      const data = { login: item.login, password: item.password };
+      const response = fetchWithData(Urls.register, "POST", data);
+      if (response.registered == "true") {
+        navigation.goBack();
+      } else {
+        setMessage("Can't register on the server.");
+      }
+    } else {
+      setMessage("Passwords are not matching.");
+    }
   };
 
   return (
     <View style={globalStyles.container}>
       <Formik
-        initialValues={{ login: "", password: "" }}
+        initialValues={{ login: "", password: "", password2: "" }}
         validationSchema={scheduleSchema}
         onSubmit={(values, actions) => {
           actions.resetForm();
@@ -60,6 +71,19 @@ export default function ScheduleListUserLogin({ setIsModalLoginOpen }) {
             <Text style={globalStyles.errorText}>
               {props.touched.password && props.errors.password}
             </Text>
+
+            <Text>Retype Password</Text>
+            <TextInput
+              style={globalStyles.input}
+              onChangeText={props.handleChange("password2")}
+              value={props.values.password2}
+              type="password"
+              onBlur={props.handleBlur("password2")}
+            />
+            <Text style={globalStyles.errorText}>
+              {props.touched.password2 && props.errors.password2}
+            </Text>
+            <Text>{message}</Text>
 
             <CustomButton text="Submit" onPress={props.handleSubmit} />
           </View>

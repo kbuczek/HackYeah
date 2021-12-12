@@ -23,6 +23,7 @@ const fetchWithData = async (thisUrl, thisMethod, thisData) => {
   }
   const resData = await response.json();
   console.log("RESPONSE", resData);
+  return resData;
 };
 
 export default fetchWithData;

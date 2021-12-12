@@ -4,6 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ScheduleList from "../screens/schedule/scheduleList";
 import ListItemDetails from "../screens/schedule/ListItemDetails";
 import { MaterialIcons } from "@expo/vector-icons";
+import ScheduleListUserRegister from "../screens/schedule/scheduleListUserRegister";
+import ScheduleListUserLogin from "../screens/schedule/scheduleListUserLogin";
 
 const Stack = createStackNavigator();
 
@@ -47,6 +49,35 @@ export default scheduleStackNav = ({ navigation }) => {
         component={ListItemDetails}
         options={{
           title: "Activity Details",
+          headerStyle: {
+            backgroundColor: "#41C05A",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="ScheduleListUserLogin"
+        component={ScheduleListUserLogin}
+        options={{
+          title: "Login",
+          headerStyle: {
+            backgroundColor: "#41C05A",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerLeft: () => null,
+        }}
+      />
+      <Stack.Screen
+        name="ScheduleListUserRegister"
+        component={ScheduleListUserRegister}
+        options={{
+          title: "Register",
           headerStyle: {
             backgroundColor: "#41C05A",
           },
